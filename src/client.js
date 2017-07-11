@@ -17,14 +17,14 @@ class APIClient {
     constructor(opts = {}) {
         this.opts = {
             // Endpoint for the API
-            endpoint:  'https://api.github.com',
+            endpoint: 'https://api.github.com',
             // User-Agent to use for requests
             userAgent: 'octocat.js',
             // Access token
-            token:     null,
+            token: null,
             // Basic auth
-            username:  null,
-            password:  null,
+            username: null,
+            password: null,
             // Custom request
             request: {},
             ...opts
@@ -36,15 +36,17 @@ class APIClient {
      * @return {String}
      */
     getAuthorizationHeader() {
-        const { token, username, password } = this.opts;
+        const {
+            token,
+            username,
+            password
+        } = this.opts;
 
         if (token) {
             return `token ${this.opts.token}`;
-        }
-        else if (username) {
+        } else if (username) {
             return 'Basic ' + base64.encode(password ? `${username}:${password}` : username);
-        }
-        else {
+        } else {
             return undefined;
         }
     }
@@ -119,7 +121,7 @@ class APIClient {
         opts = {
             headers: {},
             json: true,
-            process(r) { },
+            process(r) {},
             ...opts
         };
 
@@ -129,8 +131,7 @@ class APIClient {
         const uri = this.url(httpMethod, method, params);
 
         // Build request
-        const r = request(
-            {
+        const r = request({
                 ...this.opts.request,
                 method: httpMethod,
                 uri,

@@ -3,6 +3,7 @@ const deprecate = require('deprecate');
 const Resource = require('./resources/resource');
 const Repository = require('./resources/repository');
 const User = require('./resources/user');
+const Team = require('./resources/team');
 const Organization = require('./resources/organization');
 const Application = require('./resources/application');
 const Installation = require('./resources/installation');
@@ -16,12 +17,27 @@ class GitHub extends Resource {
     /**
      * Resources
      */
-    me() { return this.resource(User); }
-    repo(id) { return this.resource(Repository, id); }
-    user(id) { return this.resource(User, id); }
-    org(id) { return this.resource(Organization, id); }
-    app(id) { return this.resource(Application, id); }
-    installation() { return this.resource(Installation); }
+    me() {
+        return this.resource(User);
+    }
+    repo(id) {
+        return this.resource(Repository, id);
+    }
+    user(id) {
+        return this.resource(User, id);
+    }
+    team(id) {
+        return this.resource(Team, id);
+    }
+    org(id) {
+        return this.resource(Organization, id);
+    }
+    app(id) {
+        return this.resource(Application, id);
+    }
+    installation() {
+        return this.resource(Installation);
+    }
 
     /**
      * Return API limits

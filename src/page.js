@@ -25,23 +25,28 @@ class Page {
      * @return {Promise<Page>}
      */
     fetch(uri) {
-        const { page, per_page, headers } = this.options;
+        const {
+            page,
+            per_page,
+            headers
+        } = this.options;
 
         return this.client.get(
-            this.url,
-            {
-                ...this.params,
-                page, per_page
-            },
-            { headers }
-        )
-        .then((response) => {
-            this.list = response.body;
-            this.links = parseLinkHeader(response.headers.link);
+                this.url, {
+                    ...this.params,
+                    page,
+                    per_page
+                }, {
+                    headers
+                }
+            )
+            .then((response) => {
+                this.list = response.body;
+                this.links = parseLinkHeader(response.headers.link);
 
-            // Return itself
-            return this;
-        });
+                // Return itself
+                return this;
+            });
     }
 
     /**

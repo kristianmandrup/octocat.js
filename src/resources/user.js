@@ -6,7 +6,9 @@ const Resource = require('./resource');
  */
 class User extends Resource {
     constructor(client, github, id) {
-        super(client);
+        super(client, {
+            preview: true
+        });
         this.id = id;
     }
 

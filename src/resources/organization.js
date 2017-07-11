@@ -7,7 +7,9 @@ const Resource = require('./resource');
  */
 class Organization extends Resource {
     constructor(client, github, clientID) {
-        super(client);
+        super(client, {
+            preview: true
+        });
         this.id = clientID;
     }
 
@@ -42,16 +44,34 @@ class Organization extends Resource {
             });
     }
 
-    // Return list of members
-    // https://developer.github.com/v3/orgs/members/#members-list
+    /**
+     * Get organisation members
+     * https://developer.github.com/v3/orgs/members/#members-list
+     * @param {Object} params
+     *   {String} filter (2fa_disabled, all)
+     *   {String} role (all, admin, member)
+     * @param {Object} options
+     * @return {Promise<Page>}
+     */
     members(params, options) {
         return this.page('members', params, options);
     }
 
-    // GET /orgs/:org/repos
-    // https://developer.github.com/v3/repos/#list-organization-repositories
-    repos(params, options) {
-        return this.page('repos', params, options);
+    // Public members
+    // https://developer.github.com/v3/orgs/members/#members-list
+    publicMembers(options) {
+        return this.page('public_members', {}, options);
+    }
+
+    /**
+     * List repositories for this organization.
+     * https://developer.github.com/v3/repos/#list-organization-repositories
+     *
+     * @param  {Object} options
+     * @return {Promise<Page>}
+     */
+    repos(options) {
+        return this.page('repos', {}, options);
     }
 
     // Create a new repository

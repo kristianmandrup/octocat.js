@@ -90,7 +90,7 @@ These methods return a `Page` object:
 ```js
 // Get a single user
 const user = client.user('SamyPesse');
-user.info().then(function(infos) { ... });
+user.info().then(infos => { ... });
 
 // Get the authenticated user
 const user = client.me();
@@ -101,27 +101,43 @@ user.edit({
 })
 ```
 
+#### Teams
+
+```js
+// Get a single team
+const team = client.team('Fantastic3');
+team.info().then(infos => { ... });
+
+// Edit the authenticated user
+team.edit({
+    name: "New Name"
+})
+
+let repos = team.repos().then(teams => { ... })
+```
+
+
 #### Repositories
 
 ```js
 // Create a new repository
-client.createRepo({ ... }).then(function() { });
+client.createRepo({ ... }).then(() => { });
 
 // Get public repositories (paginated)
-client.repos().then(function(page) { ... });
+client.repos().then(page => { ... });
 
 // List user repositories
-user.repos().then(function(page) { ... });
+user.repos().then(page => { ... });
 
 // Get a single repository
 const repo = client.repo('SamyPesse/octocat.js');
-repo.info().then(function(infos) { ... });
+repo.info().then(infos => { ... });
 
 // Compare two commits
-repo.compare('master', 'dev').then(function(infos) { ... });
+repo.compare('master', 'dev').then(infos => { ... });
 
 // Perform a merge
-repo.merge({ base: 'master', head: 'dev' }).then(function() { ... });
+repo.merge({ base: 'master', head: 'dev' }).then(() => { ... });
 
 // Delete the repository
 repo.destroy()
@@ -131,7 +147,7 @@ repo.destroy()
 
 ```js
 // List issues for a repository
-repo.issues().then(function(page) { ... });
+repo.issues().then(page => { ... });
 
 // Create an issue in a repository
 repo.createIssue({
@@ -140,7 +156,7 @@ repo.createIssue({
 
 // Get a single issue in a repository
 const issue = repo.issue(200);
-issue.info().then(function(infos) { ... });
+issue.info().then(infos => { ... });
 
 // Edit an issue
 issue.edit({
@@ -155,14 +171,14 @@ issue.edit({
 user.orgs().then(function(orgs) { ... });
 
 // Check an user's membership to an organization
-user.getOrgMembership('organization').then(function(membership) { ... });
+user.getOrgMembership('organization').then(membership => { ... });
 
 // List an user's memberships to all of his organizations
-user.getOrgsMemberships({ state: 'active' }).then(function(page) { ... });
+user.getOrgsMemberships({ state: 'active' }).then(page => { ... });
 
 // Get a single organization
 const org = client.org('GitbookIO');
-org.info().then(function(infos) { ... });
+org.info().then(infos => { ... });
 
 // Edit the organization
 org.edit({
@@ -170,60 +186,60 @@ org.edit({
 })
 
 // List members of the organization
-org.members().then(function(page) { ... });
+org.members().then(page => { ... });
 
 // Create a new repository
-org.createRepo({ ... }).then(function() { });
+org.createRepo({ ... }).then(() => { });
 ```
 
 #### Commits
 
 ```js
 // List commits for a repository
-repo.commits().then(function(commits) { ... });
+repo.commits().then(commits => { ... });
 
 // Get a single commit
 const commit = repo.commit('6dcb09b5b57875f334f61aebed695e2e4193db5e');
-commit.info().then(function(infos) { ... });
+commit.info().then(infos => { ... });
 ```
 
 #### Statuses
 
 ```js
 // Create a Status
-repo.createStatus('sha', { ... }).then(function() { ... });
+repo.createStatus('sha', { ... }).then(() => { ... });
 
 // List Statuses for a specific Ref
-commit.statuses().then(function(statuses) { ... });
+commit.statuses().then(statuses => { ... });
 ```
 
 #### Branches
 
 ```js
 // List branches for a repository
-repo.branches().then(function(branches) { ... });
+repo.branches().then(branches => { ... });
 
 // Get a single branch
 const branch = repo.branch('master');
-branch.info().then(function(infos) { ... });
+branch.info().then(infos => { ... });
 ```
 
 #### Tags
 
 ```js
 // List tags for a repository
-repo.tags().then(function(tags) { ... });
+repo.tags().then(tags => { ... });
 ```
 
 #### Webhooks
 
 ```js
 // List hooks for a repository
-repo.hooks().then(function(hooks) { ... });
+repo.hooks().then(hooks => { ... });
 
 // Get a single hook
 const hook = repo.hook('1');
-hook.info().then(function(infos) { ... });
+hook.info().then(infos => { ... });
 
 // Edit a hook
 hook.edit({
@@ -238,11 +254,11 @@ hook.destroy()
 
 ```js
 // List releases of a repository
-repo.releases().then(function(assets) { ... });
+repo.releases().then(assets => { ... });
 
 // Get details about the release
 const release = repo.release('1');
-release.info().then(function(infos) { ... });
+release.info().then(infos => { ... });
 
 // Edit a release
 release.edit({
@@ -257,8 +273,8 @@ release.destroy()
 
 ```js
 // Upload a new asset as file/stream
-release.upload('./myfile.zip').then(function() { ... });
-release.upload(stream, { name: "myfile.zip" }).then(function() { ... });
+release.upload('./myfile.zip').then(() => { ... });
+release.upload(stream, { name: "myfile.zip" }).then(() => { ... });
 ```
 
 `release.upload` will also notify with progress:
@@ -287,17 +303,17 @@ release.upload('./myfile.zip')
 
 ```js
 // List assets of a release
-release.assets().then(function(assets) { ... });
+release.assets().then(assets => { ... });
 
 // Get details about the release
 const asset = release.asset('1');
-asset.info().then(function(infos) { ... });
+asset.info().then(infos => { ... });
 
 // Download the asset to a file
-asset.download('./myfile.zip').then(function() { ... });
+asset.download('./myfile.zip').then(() => { ... });
 
 // Download the asset to a stream
-asset.download(stream).then(function() { ... });
+asset.download(stream).then(() => { ... });
 
 // Delete the asset
 asset.destroy()
@@ -307,13 +323,13 @@ asset.destroy()
 
 ```js
 // List email addresses
-client.userEmails().then(function(emails) { ... });
+client.userEmails().then(emails => { ... });
 
 // Add email address(es)
-client.addUserEmails([ 'octocat@github.com' ]).then(function() { ... });
+client.addUserEmails([ 'octocat@github.com' ]).then(() => { ... });
 
 // Delete email address(es)
-client.deleteUserEmails([ 'octocat@github.com' ]).then(function() { ... });
+client.deleteUserEmails([ 'octocat@github.com' ]).then(() => { ... });
 ```
 
 #### Authorization for a specific app
@@ -323,13 +339,13 @@ const app = client.application('clientId');
 const token = app.token('access_token');
 
 // Check an authorization
-token.info().then(function(infos) { ... });
+token.info().then(infos => { ... });
 
 // Reset an authorization
-token.reset().then(function() { ... });
+token.reset().then(() => { ... });
 
 // Delete an authorization
-token.destroy().then(function() { ... });
+token.destroy().then(() => { ... });
 ```
 
 #### Git Data
@@ -340,11 +356,11 @@ token.destroy().then(function() { ... });
 const ref = repo.gitRef('heads/master');
 
 // Get a reference
-ref.info().then(function(infos) { ... });
+ref.info().then(infos => { ... });
 
 // Edit / Delete
-ref.edit({ ... }).then(function() { ... });
-ref.destroy().then(function() { ... });
+ref.edit({ ... }).then(() => { ... });
+ref.destroy().then(() => { ... });
 ```
 
 ###### Commit
@@ -353,7 +369,7 @@ ref.destroy().then(function() { ... });
 const commit = repo.gitCommit('<sha>');
 
 // Get a commit
-commit.info().then(function(infos) { ... });
+commit.info().then(infos => { ... });
 ```
 
 #### Rate Limiting
@@ -361,5 +377,5 @@ commit.info().then(function(infos) { ... });
 You can also check your rate limit status by calling the following.
 
 ```js
-client.limit().then(function(rate) { ... })
+client.limit().then(rate => { ... })
 ```

@@ -6,12 +6,18 @@ const Page = require('../page');
  * @type {Class}
  */
 class Resource {
-    constructor(client) {
+    constructor(client, opts = {}) {
         this.client = client;
 
         if (!client) {
             throw new Error('Resource should create with a client as first argument');
         }
+
+        if (opts.preview) this.configurePreview();
+    }
+
+    configurePreview() {
+        this.client.opts.accept = 'application/vnd.github.korra-preview';
     }
 
     /**
@@ -34,6 +40,9 @@ class Resource {
     }
     patch(uri, params, opts) {
         return this.client.patch(this.url(uri), params, opts);
+    }
+    put(uri, params, opts) {
+        return this.client.put(this.url(uri), params, opts);
     }
     del(uri, params, opts) {
         return this.client.del(this.url(uri), params, opts);
