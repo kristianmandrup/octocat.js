@@ -35,17 +35,26 @@ class Organization extends Resource {
     // https://developer.github.com/v3/orgs/members/#check-membership
     isMember(user) {
         return this.get(`members/${user}`)
-        .then(() => {
-            return true;
-        }, () => {
-            return Promise(false);
-        });
+            .then(() => {
+                return true;
+            }, () => {
+                return Promise(false);
+            });
     }
 
     // Return list of members
     // https://developer.github.com/v3/orgs/members/#members-list
     members(params, options) {
         return this.page('members', params, options);
+    }
+
+    // GET /orgs/:org/repos
+    // https://developer.github.com/v3/repos/#list-organization-repositories
+    repos(type) {
+        return this.get('repos', {
+                type
+            })
+            .get('body');
     }
 
     // Create a new repository
