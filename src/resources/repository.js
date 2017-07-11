@@ -28,14 +28,30 @@ class Repository extends Resource {
     /**
      * Resources
      */
-    issue(id) { return this.resource(Issue, id); }
-    release(id) { return this.resource(Release, id); }
-    hook(id) { return this.resource(Hook, id); }
-    commit(id) { return this.resource(Commit, id); }
-    branch(id) { return this.resource(Branch, id); }
-    gitCommit(id) { return this.resource(GitCommit, id); }
-    gitRef(id) { return this.resource(GitRef, id); }
-    gitBlob(id) { return this.resource(GitBlob, id); }
+    issue(id) {
+        return this.resource(Issue, id);
+    }
+    release(id) {
+        return this.resource(Release, id);
+    }
+    hook(id) {
+        return this.resource(Hook, id);
+    }
+    commit(id) {
+        return this.resource(Commit, id);
+    }
+    branch(id) {
+        return this.resource(Branch, id);
+    }
+    gitCommit(id) {
+        return this.resource(GitCommit, id);
+    }
+    gitRef(id) {
+        return this.resource(GitRef, id);
+    }
+    gitBlob(id) {
+        return this.resource(GitBlob, id);
+    }
 
     // Get details about the repository
     info() {
@@ -70,6 +86,17 @@ class Repository extends Resource {
         return this.page('tags', {}, opts);
     }
 
+    // List Teams
+    // https://developer.github.com/v3/repos/#list-teams
+    teams(opts) {
+        return this.page('teams', {}, opts);
+    }
+
+    // List Contributors
+    // https://developer.github.com/v3/repos/#list-teams
+    contributors(opts) {
+        return this.page('contributors', {}, opts);
+    }
     // Compare two commits
     // https://developer.github.com/v3/repos/commits/#compare-two-commits
     compare(base, head) {

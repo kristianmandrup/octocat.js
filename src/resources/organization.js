@@ -50,11 +50,8 @@ class Organization extends Resource {
 
     // GET /orgs/:org/repos
     // https://developer.github.com/v3/repos/#list-organization-repositories
-    repos(type) {
-        return this.get('repos', {
-                type
-            })
-            .get('body');
+    repos(params, options) {
+        return this.page('repos', params, options);
     }
 
     // Create a new repository
