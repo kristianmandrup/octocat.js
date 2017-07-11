@@ -87,7 +87,33 @@ module.exports = class Team extends Resource {
      * @return {Promise<JSON>}
      */
     removeMember(username, options = {}) {
-        this.put(`memberships/${username}`, {}, options)
+        return this.del(`memberships/${username}`, {}, options);
+    }
+
+    /**
+     * Add or update team membership
+     * https://developer.github.com/v3/orgs/teams/#add-or-update-team-membership
+     * @param {String} orgName
+     * @param {String} repoName
+     * @param {Object} params
+     *  {String} permission
+     * @param {Object} options
+     * @return {Promise<JSON>}
+     */
+    addRepo(orgName, repoName, params, options) {
+        return this.put(`repos/${orgName}/${repoName}`, params, options)
             .get('body');
+    }
+
+    /**
+     * Remove team membership
+     * https://developer.github.com/v3/orgs/teams/#remove-team-membership
+     * @param  {String} owner
+     * @param  {String} repoName
+     * @param {Object} options
+     * @return {Promise<JSON>}
+     */
+    removeRepo(owner, repoName, options = {}) {
+        return this.del(`repos/${owner}/${repoName}`, {}, options);
     }
 };

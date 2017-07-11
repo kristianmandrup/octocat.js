@@ -42,6 +42,17 @@ class User extends Resource {
     }
 
     /**
+     * List teams for this user.
+     * https://developer.github.com/v3/orgs/teams/#list-user-teams
+     *
+     * @param  {Object} options
+     * @return {Promise<Page>}
+     */
+    teams(options) {
+        return this.page('teams', {}, options);
+    }
+
+    /**
      * List organizations for this user.
      * https://developer.github.com/v3/orgs/#list-your-organizations
      *
