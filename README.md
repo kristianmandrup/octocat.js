@@ -39,6 +39,49 @@ const client = new GitHub({
 });
 ```
 
+#### Logging
+
+You can pass an extra `options` object to define logging.
+To simply enable (full) logging, pass `logging: true`
+
+```js
+const client = new GitHub({
+    token: 'my-access-token'
+}, {
+    logging: true
+});
+```
+
+#### Advanced Logging
+
+You can pass a `logging` object to fine tune for which classes
+the logger should log.
+The logging object can take the following entries (values for each must be either an Array or a single String/RegExp)
+
+- `onlyMsgs` (msg match)
+- `ignoreMsgs` (msg match)
+- `ignore` (class name)
+- `only` (class name)
+
+```js
+const client = client.user('xyz123', {
+    logging: {
+        only: 'Resource',
+        ignoreMsgs: [/warn/, /info/]
+    }
+});
+```
+
+You can also use `configureLogging` to configure logging on a `Loggable` instance at any time...
+
+```js
+client.configureLogging(
+    logging: {
+        onlyMsgs: ['page', 'url'] // or use regexp /pag?/
+    }
+});
+```
+
 #### HTTP API access
 
 All of these methods return promises.

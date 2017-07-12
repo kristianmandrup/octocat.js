@@ -16,7 +16,11 @@ module.exports = class Loggable {
         this.logging = !!logging
         this.logIgnore = []
         this.logOnly = []
+        this.ignoreMsgs = []
+        this.onlyMsgs = []
         if (isObject(logging)) {
+            this.ignoreMsgs = toArray(logging.ignoreMsgs || [])
+            this.onlyMsgs = toArray(logging.onlyMsgs || [])
             this.logOnly = toArray(logging.only || [])
             this.logIgnore = toArray(logging.ignore || [])
         }
@@ -91,8 +95,32 @@ module.exports = class Loggable {
         return this.logOnly.length > 0 && this.logOnly.indexOf(this.name) < 0
     }
 
+    _compareMsg(list = [], msg) {
+        return list.find((compare) => {
+            try {
+                const regexp = new RegExp(compare, 'i')
+                return regexp.test(msg)
+            } catch (err) {
+                this.error('Invalid logging condition RegExp', {
+                    compare,
+                    msg
+                })
+            }
+        })
+    }
+
+    _ignoreMsg(msg) {
+        return this._compareMsg(this.ignoreMsgs, msg)
+    }
+
+    _onlyMsg(msg) {
+        if (this.onlyMsgs.length == 0) return true
+        return this._compareMsg(this.OnlyMsgs, msg)
+    }
+
     log(msg, data) {
         if (this.logging) {
+            if (this._ignoreMsg(msg) || !this._onlyMsg(msg)) return
             if (this.ignoreLog) return
             return this._writeLogMsg('info', msg, data)
         }
