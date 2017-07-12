@@ -7,8 +7,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class Branch extends Resource {
-    constructor(client, repo, ref) {
-        super(client);
+    constructor(client, repo, ref, opts = {}) {
+        super(client, opts);
         this.repo = repo;
         this.ref = ref;
     }

@@ -6,9 +6,9 @@ const Authorization = require('./authorization');
  * @type {Resource}
  */
 class Application extends Resource {
-    constructor(client, github, clientID) {
+    constructor(client, github, id) {
         super(client);
-        this.id = clientID;
+        this.id = id;
     }
 
     /**

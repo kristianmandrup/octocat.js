@@ -8,13 +8,14 @@ const isAbsoluteUrl = require('is-absolute-url');
 const joinURL = require('url-join');
 
 const GitHubError = require('./error');
-
+const Loggable = require('./loggable')
 /**
  * Client for the GitHub API.
  * @type {Class}
  */
-class APIClient {
-    constructor(opts = {}) {
+class APIClient extends Loggable {
+    constructor(options = {}) {
+        super('APIClient', options)
         this.opts = {
             // Endpoint for the API
             endpoint: 'https://api.github.com',
@@ -27,8 +28,11 @@ class APIClient {
             password: null,
             // Custom request
             request: {},
-            ...opts
+            ...options
         };
+        this.log('APIClient:created', {
+            opts: this.opts
+        })
     }
 
     /**
@@ -42,6 +46,11 @@ class APIClient {
             password
         } = this.opts;
 
+        this.log('getAuthorizationHeader', {
+            token,
+            username,
+            password
+        })
         if (token) {
             return `token ${this.opts.token}`;
         } else if (username) {
@@ -59,6 +68,11 @@ class APIClient {
      * @return {String}
      */
     url(httpMethod, method, params) {
+        this.log('url', {
+            httpMethod,
+            method,
+            params
+        })
         let uri = isAbsoluteUrl(method) ? method : joinURL(this.opts.endpoint, method);
 
         const parsedUrl = url.parse(uri);
@@ -80,6 +94,11 @@ class APIClient {
      * Parse an HTTP response to handle error.
      */
     onResponse(response, body, opts = {}) {
+        this.log('onResponse', {
+            response,
+            body,
+            opts
+        })
         opts = {
             successOn: ['2XX'],
             ...opts
@@ -118,6 +137,12 @@ class APIClient {
      * Execute an API request.
      */
     request(httpMethod, method, params, opts = {}) {
+        this.log('request', {
+            httpMethod,
+            method,
+            params,
+            opts
+        })
         opts = {
             headers: {},
             json: true,

@@ -7,8 +7,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class Authorization extends Resource {
-    constructor(client, app, tokenID) {
-        super(client);
+    constructor(client, app, tokenID, opts = {}) {
+        super(client, opts);
         this.app = app;
         this.token = tokenID;
     }

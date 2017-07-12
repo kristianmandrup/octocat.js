@@ -14,8 +14,8 @@ const ReleaseAsset = require('./release_asset');
  * @type {Resource}
  */
 class Release extends Resource {
-    constructor(client, repo, id) {
-        super(client);
+    constructor(client, repo, id, opts = {}) {
+        super(client, opts);
         this.repo = repo;
         this.id = id;
         this._infos = null;
@@ -28,7 +28,9 @@ class Release extends Resource {
         return this.repo.url(`releases/${this.id}`, ...args);
     }
 
-    asset(id) { return this.resource(ReleaseAsset, id); }
+    asset(id) {
+        return this.resource(ReleaseAsset, id);
+    }
 
     // Get details about the release
     info() {
@@ -80,57 +82,57 @@ class Release extends Resource {
 
         return Promise()
 
-        // Detect size
-        .then(() => {
-            if (opts.size) {
-                return opts.size;
-            }
-
-            return Promise.nfcall(fs.stat, originalOutput).get('size');
-        })
-        .then((size) => {
-            opts.size = size;
-            return that._infos || that.info();
-        })
-        .then((release) => {
-            const d = Promise.defer();
-
-            const uploadUrl = release.upload_url.replace(/\{(\S+)\}/, '') + '?' + querystring.stringify({
-                name: opts.name,
-                label: opts.label
-            });
-
-            const prg = progress({
-                length: opts.size,
-                time: 100
-            });
-
-            prg.on('progress', (state) => {
-                d.notify(state);
-            });
-
-            output.on('error', (err) => {
-                d.reject(err);
-            });
-
-            that.client.post(uploadUrl, undefined, {
-                json: false,
-                headers: {
-                    'Content-Type': opts.mime,
-                    'Content-Length': opts.size
-                },
-                process(r) {
-                    output.pipe(prg).pipe(r);
-                }
-            })
+            // Detect size
             .then(() => {
-                d.resolve();
-            }, (err) => {
-                d.reject(err);
-            });
+                if (opts.size) {
+                    return opts.size;
+                }
 
-            return d.promise;
-        });
+                return Promise.nfcall(fs.stat, originalOutput).get('size');
+            })
+            .then((size) => {
+                opts.size = size;
+                return that._infos || that.info();
+            })
+            .then((release) => {
+                const d = Promise.defer();
+
+                const uploadUrl = release.upload_url.replace(/\{(\S+)\}/, '') + '?' + querystring.stringify({
+                    name: opts.name,
+                    label: opts.label
+                });
+
+                const prg = progress({
+                    length: opts.size,
+                    time: 100
+                });
+
+                prg.on('progress', (state) => {
+                    d.notify(state);
+                });
+
+                output.on('error', (err) => {
+                    d.reject(err);
+                });
+
+                that.client.post(uploadUrl, undefined, {
+                        json: false,
+                        headers: {
+                            'Content-Type': opts.mime,
+                            'Content-Length': opts.size
+                        },
+                        process(r) {
+                            output.pipe(prg).pipe(r);
+                        }
+                    })
+                    .then(() => {
+                        d.resolve();
+                    }, (err) => {
+                        d.reject(err);
+                    });
+
+                return d.promise;
+            });
     }
 
     // Remove the release

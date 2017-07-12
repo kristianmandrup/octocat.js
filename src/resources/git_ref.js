@@ -7,8 +7,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class GitRef extends Resource {
-    constructor(client, repo, name) {
-        super(client);
+    constructor(client, repo, name, opts = {}) {
+        super(client, opts);
         this.repo = repo;
         this.name = name;
     }

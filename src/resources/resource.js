@@ -1,23 +1,29 @@
 const joinURL = require('url-join');
 const Page = require('../page');
+const Loggable = require('./loggable')
 
+const PREVIEW_ACCEPT = 'application/vnd.github.korra-preview'
 /**
  * Resource from the API.
  * @type {Class}
  */
-class Resource {
+class Resource extends Loggable {
     constructor(client, opts = {}) {
+        super('Resource', opts)
         this.client = client;
 
         if (!client) {
             throw new Error('Resource should create with a client as first argument');
         }
 
-        if (opts.preview) this.configurePreview();
+        if (opts.preview) this.configurePreviewAPI();
     }
 
-    configurePreview() {
-        this.client.opts.accept = 'application/vnd.github.korra-preview';
+    configurePreviewAPI() {
+        this.log('configurePreview', {
+            accept: PREVIEW_ACCEPT
+        })
+        this.client.opts.accept = PREVIEW_ACCEPT;
     }
 
     /**
@@ -67,6 +73,11 @@ class Resource {
      * @return {Promise<Page>}
      */
     page(uri, params, options) {
+        this.log('page', {
+            uri,
+            params,
+            options
+        })
         const page = new Page(
             this.client,
             this.url(uri),

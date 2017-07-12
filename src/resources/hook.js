@@ -7,8 +7,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class Hook extends Resource {
-    constructor(client, repo, id) {
-        super(client);
+    constructor(client, repo, id, opts = {}) {
+        super(client, opts);
         this.repo = repo;
         this.id = id;
     }

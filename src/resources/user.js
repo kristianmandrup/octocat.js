@@ -5,10 +5,10 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class User extends Resource {
-    constructor(client, github, id) {
-        super(client, {
+    constructor(client, github, id, opts = {}) {
+        super(client, Object.assign({
             preview: true
-        });
+        }, opts));
         this.id = id;
     }
 

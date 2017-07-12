@@ -1,12 +1,14 @@
 const deprecate = require('deprecate');
+const {
+    Resource,
+    Repository,
+    User,
+    Team,
+    Organization,
+    Application,
+    Installation
+} = require('./resources');
 
-const Resource = require('./resources/resource');
-const Repository = require('./resources/repository');
-const User = require('./resources/user');
-const Team = require('./resources/team');
-const Organization = require('./resources/organization');
-const Application = require('./resources/application');
-const Installation = require('./resources/installation');
 const APIClient = require('./client');
 
 class GitHub extends Resource {
@@ -17,26 +19,26 @@ class GitHub extends Resource {
     /**
      * Resources
      */
-    me() {
-        return this.resource(User);
+    me(opts) {
+        return this.resource(User, null, opts);
     }
-    repo(id) {
-        return this.resource(Repository, id);
+    repo(id, opts) {
+        return this.resource(Repository, id, opts);
     }
-    user(id) {
-        return this.resource(User, id);
+    user(id, opts) {
+        return this.resource(User, id, opts);
     }
-    team(id) {
-        return this.resource(Team, id);
+    team(id, opts) {
+        return this.resource(Team, id, opts);
     }
-    org(id) {
+    org(id, opts) {
         return this.resource(Organization, id);
     }
-    app(id) {
+    app(id, opts) {
         return this.resource(Application, id);
     }
-    installation() {
-        return this.resource(Installation);
+    installation(opts) {
+        return this.resource(Installation, opts);
     }
 
     /**

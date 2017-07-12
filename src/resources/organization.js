@@ -6,11 +6,11 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class Organization extends Resource {
-    constructor(client, github, clientID) {
-        super(client, {
+    constructor(client, github, id, opts = {}) {
+        super(client, Object.assign({
             preview: true
-        });
-        this.id = clientID;
+        }, opts));
+        this.id = id;
     }
 
     /**

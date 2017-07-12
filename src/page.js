@@ -1,4 +1,5 @@
 const Promise = require('q');
+const Loggable = require('./loggable')
 
 const DEFAULT_OPTIONS = {
     page: 1,
@@ -10,8 +11,9 @@ const DEFAULT_OPTIONS = {
  * Page that can be updated to iterate over pagination.
  * @type {Class}
  */
-class Page {
+class Page extends Loggable {
     constructor(client, uri, params, options = DEFAULT_OPTIONS) {
+        super('Page', options)
         this.list = [];
         this.links = {};
         this.client = client;
@@ -25,6 +27,9 @@ class Page {
      * @return {Promise<Page>}
      */
     fetch(uri) {
+        this.log('fetch', {
+            uri
+        })
         const {
             page,
             per_page,

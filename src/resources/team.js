@@ -4,10 +4,10 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 module.exports = class Team extends Resource {
-    constructor(client, github, id) {
-        super(client, {
+    constructor(client, github, id, opts = {}) {
+        super(client, Object.assign({
             preview: true
-        });
+        }, opts));
         this.id = id;
     }
 

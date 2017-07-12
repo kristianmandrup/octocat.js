@@ -13,8 +13,8 @@ const GitBlob = require('./git_blob');
  * @type {Resource}
  */
 class Repository extends Resource {
-    constructor(client, github, id) {
-        super(client);
+    constructor(client, github, id, opts) {
+        super(client, opts);
         this.id = id;
     }
 

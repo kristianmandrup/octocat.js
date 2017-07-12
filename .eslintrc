@@ -2,5 +2,8 @@
   "env": {
     "mocha": true
   },
-  "extends": "gitbook"
+  "extends": "gitbook",
+  "rules": {
+    "semi": 0
+  }
 }

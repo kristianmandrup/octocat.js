@@ -7,8 +7,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class GitBlob extends Resource {
-    constructor(client, repo, sha) {
-        super(client);
+    constructor(client, repo, sha, opts = {}) {
+        super(client, opts);
         this.repo = repo;
         this.ref = sha;
     }

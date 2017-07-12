@@ -8,8 +8,8 @@ const Resource = require('./resource');
  * @type {Resource}
  */
 class ReleaseAsset extends Resource {
-    constructor(client, release, id) {
-        super(client);
+    constructor(client, release, id, opts = {}) {
+        super(client, opts);
         this.release = release;
         this.id = id;
         this._infos = null;
@@ -46,19 +46,19 @@ class ReleaseAsset extends Resource {
         });
 
         this.client.get(this.url(), {}, {
-            json: false,
-            headers: {
-                'Accept': 'application/octet-stream'
-            },
-            process(r) {
-                r.pipe(output);
-            }
-        })
-        .then(() => {
-            d.resolve();
-        }, (err) => {
-            d.reject(err);
-        });
+                json: false,
+                headers: {
+                    'Accept': 'application/octet-stream'
+                },
+                process(r) {
+                    r.pipe(output);
+                }
+            })
+            .then(() => {
+                d.resolve();
+            }, (err) => {
+                d.reject(err);
+            });
 
         return d.promise;
     }
