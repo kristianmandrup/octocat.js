@@ -1,6 +1,6 @@
 const joinURL = require('url-join');
 const Page = require('../page');
-const Loggable = require('./loggable')
+const Loggable = require('../loggable')
 
 const PREVIEW_ACCEPT = 'application/vnd.github.korra-preview'
 /**

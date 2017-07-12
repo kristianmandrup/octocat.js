@@ -12,8 +12,8 @@ const {
 const APIClient = require('./client');
 
 class GitHub extends Resource {
-    constructor(options) {
-        super(new APIClient(options));
+    constructor(config, options) {
+        super(new APIClient(config, options));
     }
 
     /**

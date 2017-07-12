@@ -14,8 +14,8 @@ const Loggable = require('./loggable')
  * @type {Class}
  */
 class APIClient extends Loggable {
-    constructor(options = {}) {
-        super('APIClient', options)
+    constructor(config, options) {
+        super('APIClient', options || config)
         this.opts = {
             // Endpoint for the API
             endpoint: 'https://api.github.com',
@@ -28,7 +28,7 @@ class APIClient extends Loggable {
             password: null,
             // Custom request
             request: {},
-            ...options
+            ...config
         };
         this.log('APIClient:created', {
             opts: this.opts
