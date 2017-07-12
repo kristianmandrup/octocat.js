@@ -4,6 +4,7 @@ const {
     Repository,
     User,
     Team,
+    Project,
     Organization,
     Application,
     Installation
@@ -30,6 +31,9 @@ class GitHub extends Resource {
     }
     team(id, opts) {
         return this.resource(Team, id, opts);
+    }
+    project(id, opts) {
+        return this.resource(Project, id, opts);
     }
     org(id, opts) {
         return this.resource(Organization, id);

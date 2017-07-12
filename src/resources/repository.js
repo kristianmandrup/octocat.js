@@ -117,6 +117,12 @@ class Repository extends Resource {
             .get('body');
     }
 
+    // Create a new project
+    createProject(params) {
+        return this.client.post(this.url('projects'), params)
+            .get('body');
+    }
+
     // Create an issue
     createIssue(params) {
         return this.client.post(this.url('issues'), params)

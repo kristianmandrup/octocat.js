@@ -7,9 +7,7 @@ const Resource = require('./resource');
  */
 class Organization extends Resource {
     constructor(client, github, id, opts = {}) {
-        super(client, Object.assign({
-            preview: true
-        }, opts));
+        super(client, opts);
         this.id = id;
     }
 
@@ -72,6 +70,23 @@ class Organization extends Resource {
      */
     repos(options) {
         return this.page('repos', {}, options);
+    }
+
+    /**
+     * List projects for this organization.
+     * https://developer.github.com/v3/projects/#list-organization-projects
+     *
+     * @param  {Object} options
+     * @return {Promise<Page>}
+     */
+    projects(options) {
+        return this.page('projects', {}, options);
+    }
+
+    // Create a new project
+    createProject(params) {
+        return this.post(this.url('projects'), params)
+            .get('body');
     }
 
     // Create a new repository

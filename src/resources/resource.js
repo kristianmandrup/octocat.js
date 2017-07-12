@@ -1,13 +1,15 @@
 const joinURL = require('url-join');
 const Page = require('../page');
-const Loggable = require('../loggable')
+const {
+    Base,
+    preview
+} = require('../base')
 
-const PREVIEW_ACCEPT = 'application/vnd.github.korra-preview'
 /**
  * Resource from the API.
  * @type {Class}
  */
-class Resource extends Loggable {
+class Resource extends Base {
     constructor(client, opts = {}) {
         super('Resource', opts)
         this.client = client;
@@ -16,14 +18,9 @@ class Resource extends Loggable {
             throw new Error('Resource should create with a client as first argument');
         }
 
-        if (opts.preview) this.configurePreviewAPI();
-    }
-
-    configurePreviewAPI() {
-        this.log('configurePreview', {
-            accept: PREVIEW_ACCEPT
-        })
-        this.client.opts.accept = PREVIEW_ACCEPT;
+        if (opts.preview) {
+            this.client.opts.accept = this._previewAccept(opts.preview);
+        }
     }
 
     /**
@@ -73,6 +70,15 @@ class Resource extends Loggable {
      * @return {Promise<Page>}
      */
     page(uri, params, options) {
+        // TODO: use RegExp and find to match uri with one of preview keys
+        const name = preview[uri]
+        const accept = this._previewAccept(name)
+        if (accept) {
+            options.header = {
+                accept
+            }
+        }
+
         this.log('page', {
             uri,
             params,

@@ -8,12 +8,14 @@ const isAbsoluteUrl = require('is-absolute-url');
 const joinURL = require('url-join');
 
 const GitHubError = require('./error');
-const Loggable = require('./loggable')
+const {
+    Base
+} = require('./base')
 /**
  * Client for the GitHub API.
  * @type {Class}
  */
-class APIClient extends Loggable {
+class APIClient extends Base {
     constructor(config, options) {
         super('APIClient', options || config)
         this.opts = {
@@ -95,7 +97,7 @@ class APIClient extends Loggable {
      */
     onResponse(response, body, opts = {}) {
         this.log('onResponse', {
-            response,
+            statusCode: response.statusCode,
             body,
             opts
         })
@@ -149,6 +151,7 @@ class APIClient extends Loggable {
             process(r) {},
             ...opts
         };
+        opts.accept = this._previewAccept(opts)
 
         httpMethod = httpMethod.toUpperCase();
 
@@ -164,12 +167,16 @@ class APIClient extends Loggable {
                 body: httpMethod != 'GET' ? params : undefined,
                 headers: {
                     'User-Agent': this.opts.userAgent,
+                    'Accept': this.opts.accept,
                     'Authorization': this.getAuthorizationHeader(),
                     ...(this.opts.request.headers || {}),
                     ...opts.headers
                 }
             },
             (err, response, body) => {
+                // reset special client headers used for preview APIs
+                this.opts.accept = null
+
                 if (err) {
                     return d.reject(err);
                 }
